@@ -1,14 +1,33 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import './index.css';
-import App from './App';
-import reportWebVitals from './reportWebVitals';
+import React from "react";
+import ReactDOM from "react-dom";
+import "@fontsource/roboto";
+import { composeWithDevTools } from "redux-devtools-extension";
+import { createStore, applyMiddleware } from "redux";
+import { Provider } from "react-redux";
+import thunk from "redux-thunk";
+
+import "./index.css";
+import { RootView } from "./views/RootView";
+import { rootReducer } from "./store/reducers/index";
+import reportWebVitals from "./reportWebVitals";
+
+function configureStore() {
+  const store = createStore(
+    rootReducer,
+    composeWithDevTools(applyMiddleware(thunk))
+  );
+  return store;
+}
+
+const store = configureStore();
 
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+    <Provider store={store}>
+      <RootView />
+    </Provider>
   </React.StrictMode>,
-  document.getElementById('root')
+  document.getElementById("root")
 );
 
 // If you want to start measuring performance in your app, pass a function
